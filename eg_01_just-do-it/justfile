@@ -1,0 +1,8 @@
+set shell := ["zsh", "-uc"]
+
+_default:
+    @just --list --unsorted
+
+# demo
+demo:
+    ruby ./process.rb ../data/talk_feedback.csv

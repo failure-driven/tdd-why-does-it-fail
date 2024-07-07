@@ -115,7 +115,7 @@ Note:
           ).each do |row|
             count += 1
             sum += Integer(row[:rating])
-            ratings Integer(row[:rating])
+            ratings &lt;&lt; Integer(row[:rating])
           end
 
           puts "Average: #{sum/count.to_f}"

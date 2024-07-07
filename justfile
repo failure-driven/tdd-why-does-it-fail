@@ -23,9 +23,10 @@ _default:
 
     @just --list --unsorted
 
-# demo, when there is one
+# code examples
 demo:
-    @echo "{{GREEN}}demo goes here{{RESET}}"
+    pushd eg_01_just-do-it && \
+        just demo && popd
 
 # present revealjs slideshow
 present:
