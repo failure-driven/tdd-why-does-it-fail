@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>reveal.js</title>
+
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/theme/black.css">
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/theme/white.css" id="theme">
+  <!--
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/theme/night.css" id="theme">
+  -->
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="./node_modules/reveal.js/plugin/highlight/monokai.css">
+  <!--
+  <link rel="stylesheet" href="./node_modules/reveal.js/plugin/highlight/zenburn.css">
+  -->
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-markdown>
+        <script type="text/template">
+
+# TDD
+# why does it fail?
+
+> **TDD**: why, what, where, when and how does your test fail?
+
+Michael Milewski - @saramic
+
+---
+
+## Everything is a function
+
+```ruby
+
+[input]   ->   [ƛ]      -> [output]
+
+
+```
+
+Note:
+- examples:
+    publish blog, publish post, react to post, scroll to see more, video in
+    count people entering shop
+- room to overlay more complex architecture?
+    - image like https://github.com/jeastham1993/zero-to-production-rust
+
+---
+
+## CSV in ➡️  ƛ ➡️  stats out
+
+in
+
+```csv
+date_time,           username, rating, comment
+2024-07-09 19:31:00, Michael,       1, Interesting insights into testing.
+2024-07-09 19:32:00, Jane,          5, "Too technical, got lost at times."
+```
+
+**function** `[ƛ]`
+
+out
+
+```ruby [1|2|3|4-9]
+Average:  2.75
+Median:   4
+Count:   20
+Spread:
+          5 *******
+          4 **
+          3
+          2 *
+          1 ***
+```
+
+Note:
+- CSV in, aggregate, text output
+    - like a hiring code challenge: finance transactions, deals from a shopping
+    cart, grouping artwork, converting music notation
+    - a promise of an AI extension
+
+---
+
+## Like ...
+
+<p>Amazon star rating reviews</p>
+
+<img
+    width="400"
+    src="https://www.dougbornemann.com/wp-content/uploads/2020/09/DoHD-Amazon-Rankings-9-26-2020-1024x770.jpg"
+/>
+
+        </script>
+      </section>
+      <section>
+        <h3>Spike it</h3>
+        <pre>
+        <!-- could use ```ruby [3-8|9-11|14-21] -->
+        <code data-trim data-noescape data-line-numbers="3-8|9-11|14-21">
+          count = 0
+          sum = 0
+          ratings = []
+          CSV.read(
+            "software_testing_feedback.csv",
+            headers: true,
+            header_converters: :symbol,
+          ).each do |row|
+            count += 1
+            sum += Integer(row[:rating])
+            ratings Integer(row[:rating])
+          end
+
+          puts "Average: #{sum/count.to_f}"
+          puts "Median: #{ratings[ratings.length/2]}"
+          puts "Count: #{count}"
+          puts "Spread: #{(1..5)
+            .map{|k| [k, 0]}
+            .to_h
+            .merge(ratings.tally.sort_by{|k,_v| k}.to_h)
+            .inspect}"
+        </code>
+        <aside class="notes" data-markdown>
+          - read the file
+          - store some stats
+          - print and do some calculation
+        </aside>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+
+## Ship it! 🚀
+
+but ...
+
+- **Where** does it fail?
+    - on refactor <!-- .element: class="fragment" -->
+    - on extension <!-- .element: class="fragment" -->
+    - in production <!-- .element: class="fragment" -->
+- **How** does it fail?
+    - need to run it manually <!-- .element: class="fragment" -->
+
+---
+
+## Test-last development
+
+TODO test last development test and code example
+
+---
+
+## Test-last development
+
+but ...
+
+<ul>
+    <li class="fragment"><strong>What</strong> fails?</li>
+    <li class="fragment"><strong>When</strong> did it fail?</li>
+    <li class="fragment"><strong>What</strong> is tested and what isn't?</li>
+</ul>
+
+Note:
+- what fails? the overall? a function here or there? maybe pragmatic but not
+complete
+- when did you see it fail? what is the failure?
+- what is tested and what is not?
+
+---
+
+## Everything is a function
+
+```ruby [1|3|5]
+[input]   ->   [ƛ]      -> [output]
+
+Given     ->   When     -> Then
+
+Arrange   ->   Act      -> Assert
+```
+
+---
+
+## Test Driven Development
+
+TODO test driven development code/test example
+- show failure first
+- show better design
+- show error
+- read message
+- read line number
+- is it what you expected
+
+---
+
+## TDD - tip
+
+- **How** to start?
+    - start small <!-- .element: class="fragment" -->
+    - guess how it will fail <!-- .element: class="fragment" -->
+    - read the errors <!-- .element: class="fragment" -->
+
+Note:
+- start small, you can take bigger steps later
+- write the test and guess how it will fail
+- read the error message, the line number the spelling is it what you expected?
+- use the error to drive the implementation
+- write tests that drive you where you want your implementation to go
+
+---
+
+## Test Driven Development
+
+we can now answer ...
+
+<ul>
+    <li class="fragment"><strong>Why</strong> TDD?</li>
+    <ul>
+        <li class="fragment">see how it fails!</li>
+        <li class="fragment">know what is tested!</li>
+        <li class="fragment">better design <em>Test Driven Design</em></li>
+    </ul>
+</ul>
+
+Note:
+- see how it fails to help debug when things are broken
+- you will read the test and it's output many more times than you write it
+
+---
+
+TODO code/test example if bad failures
+    - **How** does it fail - true is not false, non [] on nil, 1 is not 2
+
+---
+<!-- .slide: data-background="#FFFFFF" -->
+## TDD - tip
+
+make sure that you see 👀 the <em style="color: red">failure</em>
+
+and 🫵 you know what it <em style="color: green">means</em>
+
+---
+
+TODO code/test example if bad let's, subjects, described_calss and indirection
+    shared examples, generated descriptions
+
+---
+
+## TDD - tip
+
+**DAMP** Descriptive and Meaningful Phrases
+
+vs
+
+**DRY** Don't Repeat Yourself
+
+
+Note:
+be willing to question things like betterspecs.org
+
+---
+
+## Outside in vs bottom up
+
+- **Where** to start?
+    - with a spike? <!-- .element: class="fragment" -->
+    - test a function we know we will need? <!-- .element: class="fragment" -->
+    - from the end user prespective? <!-- .element: class="fragment" -->
+
+## all of the above! <!-- .element: class="fragment" -->
+
+Note:
+- spike to get a feel - but it's throw away code
+- test a function you might not know how to build to give you confidence
+- start and end from a user perspective is your best bet
+
+---
+
+## BDD
+### Behaviour Driven Development <!-- .element: style="text-transform: none" -->
+
+TODO test demo of bdd
+- test command line
+- unit test parts
+- only test what is relevant
+
+---
+
+## Outside in BDD on the Web
+TODO ...
+
+- [ ] eg_05-outside-in-bdd-web
+    - **How** to test Rails app
+    - **When** freeze time in backend
+    - **When** test transitions, spinners
+    - **When** freeze time in frontend
+
+---
+
+<!-- .slide: data-visibility="hidden" -->
+## BDD - Testing external APIs
+
+Note:
+- hexagonal architecture, fakes etc
+
+---
+
+## Outside in BDD and TDD
+
+<img
+    src="images/2_unit_tests_0_integration_tests.gif"
+    width="640">
+
+---
+
+## Outside in BDD and TDD
+
+<img
+    src="images/integration_vs_unit_tests.gif"
+    width="640">
+
+---
+
+<!-- .slide: data-visibility="hidden" -->
+## New requirement!!!
+TODO ...
+
+- sentiment analysis
+
+- [ ] new requirement - LLM for sentiment
+- [ ] eg_06-adaptor-and-fake
+    - **How** can I test
+    - **How** can I develop, with fake
+
+---
+
+<!-- .slide: data-visibility="hidden" -->
+## Team growth!!!
+TODO ...
+
+- microservices
+
+- [ ] team growth - split out microservice
+- [ ] eg_07-microservice-contracts
+    - **Events**
+    - **Consumer** driven contracts
+- [ ] eg_08-rate this talk
+
+---
+
+<!-- .slide: data-visibility="hidden" -->
+## Rate this Talk!!!
+TODO ...
+
+- QR
+
+---
+
+## Summary
+
+TODO ...
+
+- **why**
+- **what**
+- **where**
+- **when**
+- **how**
+
+---
+
+## Thank-you
+
+Michael Milewski - @saramic
+
+https://github.com/failure-driven/tdd-why-does-it-fail
+- TODO QR
+
+        </script>
+      </section>
+    </div>
+  </div>
+
+  <script src="./node_modules/reveal.js/dist/reveal.js"></script>
+  <script src="./node_modules/reveal.js/plugin/notes/notes.js"></script>
+  <script src="./node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+  <script src="./node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+  <script src="./node_modules/reveal.js/plugin/math/math.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [
+        RevealMarkdown,
+        RevealHighlight,
+        RevealNotes
+      ]
+    });
+  </script>
+</body>
+
+</html>

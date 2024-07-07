@@ -27,7 +27,10 @@ _default:
 demo:
     @echo "{{GREEN}}demo goes here{{RESET}}"
 
-# presentation using revealjs
-presentation:
-    @echo "{{GREEN}}presentation goes here{{RESET}}"
+# present revealjs slideshow
+present:
+    pushd presentation && \
+        npm install && \
+        npm run dev && \
+        popd
 
