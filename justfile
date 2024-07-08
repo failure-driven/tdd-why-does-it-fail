@@ -35,3 +35,17 @@ present:
         npm run dev && \
         popd
 
+# test the code
+rspec:
+    @echo "{{GREEN}}testing steps go here ...{{RESET}}"
+
+# lint the code
+rubocop:
+    bundle exec rubocop
+
+# auto fix with rubocop autocorrect-all (-A)
+rubocop-fix:
+    bundle exec rubocop --autocorrect-all
+
+# test, lint and demo
+build: rspec rubocop demo
